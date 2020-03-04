@@ -22,7 +22,7 @@ $app->get('/', function ($request, $response, $args) {
   return $response->withJson($result, 200, JSON_PRETTY_PRINT);
 });
 
-$app->group('api/v1/todos', function() use($app) {
+$app->group('/api/v1/todos', function() use($app) {
 
   $app->get('', function ($request, $response, $args) {
   $result = $this->task->getTasks();
