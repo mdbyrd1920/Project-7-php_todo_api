@@ -3,20 +3,62 @@ namespace App\Model;
 
 class Task
 {
-  protected $database;
-  public function __construct(\PDO $database)
-{
-  $this->database = $database;
-}
-public function getTasks()
-{
-$statment =$this->database->prepare(
-  'SELECT * FROM tasks ORDER BY id'
-);
-  $statment->execute();
-  return $statment->fetchAll();
-}
+      protected $database;
+      public function __construct(\PDO $database)
+    {
+      $this->database = $database;
+    }
+    public function getTasks()
+    {
+    $statement =$this->database->prepare(
+      'SELECT * FROM tasks ORDER BY id'
+    );
+      $statement->execute();
+      return $statement->fetchAll();
+    }
 
+    public function getTask($task_id)
+    {
+    $statement =$this->database->prepare(
+      'SELECT * FROM tasks WHERE id=:id'
+    );
+      $statement->bindParam('id', $task_id);
+      $statement->execute();
+      return $statement->fetch();
+    }
+
+    public function createTask($data)
+    {
+    $statement =$this->database->prepare(
+      'INSERT INTO tasks(tasks, status) VALUES (:tasks, :status)'
+    );
+      $statement->bindParam('task', $data['task']);
+      $statement->bindParam('status', $data['status']);
+      $statement->execute();
+      return $this->getTask($this->database->lastInsertId());
+    }
+
+    public function updateTask($data)
+    {
+    $statement =$this->database->prepare(
+      'UPDATE tasks SET task=:task, status=:status WHERE id=:id'
+    );
+    $statement->bindParam('task', $data['task']);
+    $statement->bindParam('status', $data['status']);
+    $statement->bindParam('id', $data['task_id']);
+    $statement->execute();
+    return $this->getTask($data['task_id']);
+    }
+
+    public function deleteTask($task_id)
+    {
+    $statement =$this->database->prepare(
+      'DELETE FROM tasks WHERE id=:id'
+    );
+      $statement->bindParam('id', $task_id);
+      $statement->execute();
+      return ['message' => 'The task was deleted'];
+    }
 
 } //the end
 

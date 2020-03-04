@@ -23,6 +23,7 @@ $container['logger'] = function ($c) {
 //API
 $container['api'] = function($c) {
 $api = $c->get('settings') ['api'];
+$api['api_url'] = $api['base_url']. '/api/'.$api['verison'];
 return $api;
 };
 
