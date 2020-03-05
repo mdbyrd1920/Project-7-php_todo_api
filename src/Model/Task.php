@@ -30,7 +30,7 @@ class Task
     public function createTask($data)
     {
     $statement =$this->database->prepare(
-      'INSERT INTO tasks(tasks, status) VALUES (:tasks, :status)'
+      'INSERT INTO tasks(task, status) VALUES (:task, :status)'
     );
       $statement->bindParam('task', $data['task']);
       $statement->bindParam('status', $data['status']);
